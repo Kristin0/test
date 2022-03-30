@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5" -->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+        <display-name>West</display-name>
+
+        <welcome-file-list>
+                <welcome-file>West.jsp</welcome-file>
+        </welcome-file-list>
+
+        <listener>
+                <listener-class>com.temis.west.server.listeners.SessionsListener</listener-class>
+        </listener>
+        <listener>
+                <listener-class>com.temis.west.server.guice.GuiceServletConfig</listener-class>
+        </listener>
+        <!-- for Atmosphere session support --> 
+        <!-- listener>
+            <listener-class>org.atmosphere.cpr.SessionSupport</listener-class>
+        </listener -->
+
+        <servlet>
+        <description>AtmosphereServlet</description>
+        <servlet-name>AtmosphereServlet</servlet-name>
+        <servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+        <init-param>
+                <param-name>org.atmosphere.cpr.AnnotationProcessor</param-name>
+                <param-value>org.atmosphere.util.VoidAnnotationProcessor</param-value>
+        </init-param>
+        <init-param>
+                <param-name>org.atmosphere.cpr.AtmosphereHandler</param-name>
+                <param-value>com.temis.west.server.atmosphere.JsonAtmosphereHandler</param-value>
+        </init-param>
+        <init-param>
+                <param-name>org.atmosphere.cpr.broadcaster.maxProcessingThreads</param-name>
+                <param-value>10</param-value>
+        </init-param>
+        <init-param>
+                <param-name>org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads</param-name>
+                <param-value>10</param-value>
+        </init-param>
+        <init-param>
+                <param-name>org.atmosphere.cpr.AtmosphereInterceptor</param-name>
+                <param-value>org.atmosphere.client.TrackMessageSizeInterceptor</param-value>
+        </init-param>
+        <!-- init-param>
+            <param-name>org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults</param-name>
+            <param-value>true</param-value>
+        </init-param -->
+                <!-- for Atmosphere session support --> 
+                <!-- context-param>
+                    <param-name>org.atmosphere.cpr.sessionSupport</param-name>
+                    <param-value>true</param-value>
+                </context-param -->
+        <load-on-startup>1</load-on-startup>
+        <!--Uncomment if you want to use Servlet 3.0 Async Support-->
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AtmosphereServlet</servlet-name>
+        <url-pattern>/west/atmosphere/*</url-pattern>
+    </servlet-mapping>
+
+        <servlet>
+                <servlet-name>remoteLoggingServlet</servlet-name>
+<!--            <servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class> -->
+                <servlet-class>com.temis.west.server.servlet.LoggerServlet</servlet-class>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>remoteLoggingServlet</servlet-name>
+                <url-pattern>/west/remote_logging</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+                <servlet-name>cartridgeExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.CartridgeExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>cartridgeExporter</servlet-name>
+                <url-pattern>/administration/cartridge/exporter</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+                <servlet-name>qualityExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.QualityExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>qualityExporter</servlet-name>
+                <url-pattern>/administration/quality/exporter</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+                <servlet-name>documentExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.DocumentExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>documentExporter</servlet-name>
+                <url-pattern>/administration/document/exporter</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+                <servlet-name>formattedDocumentsExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.FormattedDocumentsExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>formattedDocumentsExporter</servlet-name>
+                <url-pattern>/administration/documents/exporter</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+                <servlet-name>thesaurusExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.ThesaurusExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>thesaurusExporter</servlet-name>
+                <url-pattern>/administration/thesaurus/exporter</url-pattern>
+        </servlet-mapping>    
+    
+    <servlet>
+                <servlet-name>backupExporter</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.BackupExporterServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>backupExporter</servlet-name>
+                <url-pattern>/administration/backup/exporter</url-pattern>
+        </servlet-mapping>
+
+    <servlet>
+                <servlet-name>servletError</servlet-name>
+                <servlet-class>com.temis.west.server.servlet.ServletErrorHandlerServlet</servlet-class>
+                <load-on-startup>2</load-on-startup>
+        <async-supported>true</async-supported>
+        </servlet>
+        <servlet-mapping>
+                <servlet-name>servletError</servlet-name>
+                <url-pattern>/servlet-error</url-pattern>
+        </servlet-mapping>
+    
+        <!-- REST (jersey) -->
+        <!-- <servlet> <servlet-name>jersey-servlet</servlet-name> <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class> 
+                <init-param> <param-name>com.sun.jersey.config.property.packages</param-name> 
+                <param-value>org.codehaus.jackson.jaxrs;com.temis.west.server.rest</param-value> 
+                </init-param> <init-param> <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name> 
+                <param-value>true</param-value> </init-param> <load-on-startup>1</load-on-startup> 
+                </servlet> <servlet-mapping> <servlet-name>jersey-servlet</servlet-name> 
+                <url-pattern>/west-rs/*</url-pattern> </servlet-mapping> -->
+        <session-config>
+                <session-timeout>30</session-timeout>
+        </session-config>
+
+        <context-param>
+                <param-name>resteasy.servlet.mapping.prefix</param-name>
+                <param-value>/rest</param-value>
+        </context-param>
+        <context-param>
+                <param-name>resteasy.providers</param-name>
+                <param-value>com.temis.west.server.filters.LoggingFilter</param-value>
+        </context-param>
+        <context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>com.temis.west.server.rest.exception.RestExceptionHandler</param-value>
+        </context-param>
+
+        <filter>
+                <filter-name>guiceFilter</filter-name>
+                <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+        <async-supported>true</async-supported>
+        </filter>
+        <filter>
+                <filter-name>CharsetFilter</filter-name>
+                <filter-class>com.temis.west.server.filters.CharsetFilter</filter-class>
+        <async-supported>true</async-supported>
+                <init-param>
+                        <param-name>requestEncoding</param-name>
+                        <param-value>UTF-8</param-value>
+                </init-param>
+        </filter>
+        <!-- useless? -->
+        <!-- listener> <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class> 
+                </listener -->
+        <filter-mapping>
+                <filter-name>CharsetFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+        </filter-mapping>
+
+        <filter-mapping>
+                <filter-name>guiceFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+        </filter-mapping>
+
+        <filter>
+                <filter-name>GWTCacheControlFilter</filter-name>
+                <filter-class>com.temis.west.server.servlet.GWTCacheControlFilter</filter-class>
+        <async-supported>true</async-supported>
+        </filter>
+        <filter-mapping>
+                <filter-name>GWTCacheControlFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+        </filter-mapping>
+
+        <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/servlet-error</location>
+        </error-page>
+   
+</web-app>
